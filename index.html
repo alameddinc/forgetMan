@@ -1,0 +1,69 @@
+<!doctype html>
+<html>
+<head>
+    <title>Forgetful </title>
+    <meta name="description" content="This a relaxing page, You can write everythnig. I can't see write what you">
+    <meta charset="utf-8">
+    <link href="https://fonts.googleapis.com/css?family=Righteous|Roboto" rel="stylesheet">
+
+</head>
+<style>
+    p {
+        color: rgba(0, 0, 0, 0.1);
+        font-family: Righteous;
+        font-weight: bold;
+        text-align: center;
+    }
+
+    .keys, .oldkeys{
+        font-family: Roboto;
+    }
+
+    .oldkeys{
+        color:rgba(0,0,0,0.2);
+    }
+</style>
+<body id="tellBody">
+<p id="helpTitle" style="font-size: 80px;">I can't remember</p>
+<p id="helpText" style="font-size: 35px;">You can tell me what you want, I'm a <u>Forgetful</u></p>
+<div id="tellMe"></div>
+<span style="color:rgba(0,0,0,0.7);font-size: 13px;font-family: roboto;position:absolute;left: 20px;bottom: 10px">
+        <input type="checkbox" id="angryButton"> Are you Angry?
+    </span>
+<span style="color:rgba(0,0,0,0.7);font-size: 13px;font-family: roboto;position:absolute;right: 20px;bottom: 10px">Don't worry, I'm not wondering what you think. I just want you to relax.</span>
+</body>
+<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+<script>
+    let angryButton = $("#angryButton");
+    let angryKeys = ['*', '?', '!'];
+    $(document).on('keypress', function (e) {
+
+        if(e.key != "Backspace" && e.key != "Enter") {
+            let isAngry = angryButton[0].checked;
+            let size = isAngry ? Math.round(Math.random() * 30) + 50 : Math.round(Math.random() * 10) + 15;
+            let key = isAngry ? angryKeys[Math.round(Math.random() * 2)] : e.key;
+            let x = Math.round(Math.random() * screen.availWidth * 0.9) + screen.availWidth * 0.05;
+            let y = Math.round(Math.random() * screen.availHeight * 0.8);
+            $("#tellMe").append('<span class="keys" style="font-size: ' + size + 'px;position: absolute;top: ' + y + 'px;left: ' + x + 'px;">' + key + '</span>')
+        }else if(e.key == "Backspace"){
+            $(".keys").last().remove();
+        }
+    });
+    angryButton.on('click', function () {
+        $(".keys").remove();
+        if (angryButton[0].checked) {
+            $("#tellBody").css("background-color", "rgba(255,0,0,0.7)");
+        } else {
+            $("#tellBody").css("background-color", "white");
+        }
+    })
+    setInterval(function () {
+        let countKey = $(".keys").length;
+        if (countKey >= 1)
+            for (let i = 0; i < Math.round(countKey / 20)+1; i++)
+                $(".keys")[Math.round(Math.random() * (countKey - 1))].remove()
+
+
+    }, 500);
+</script>
+</html>
